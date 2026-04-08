@@ -2,13 +2,35 @@ import { useMemo, useState } from 'react';
 import { recruitmentPosts } from '../../data';
 import './Danhsachtuyendung.css';
 
+function SearchIcon() {
+  return (
+    <svg aria-hidden="true" className="recruitment-icon" viewBox="0 0 24 24">
+      <path
+        d="M15.5 15h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.79L20 21.49 21.49 20 15.5 15Zm-6 0A4.5 4.5 0 1 1 14 10.5 4.5 4.5 0 0 1 9.5 15Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function LocationIcon() {
+  return (
+    <svg aria-hidden="true" className="recruitment-icon" viewBox="0 0 24 24">
+      <path
+        d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 14.5 9 2.5 2.5 0 0 1 12 11.5Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 function Danhsachtuyendung() {
   const [keyword, setKeyword] = useState('');
-  const [location, setLocation] = useState('Tat ca');
+  const [location, setLocation] = useState('Tất cả');
 
   const locations = useMemo(() => {
     const uniqueLocations = Array.from(new Set(recruitmentPosts.map((post) => post.location)));
-    return ['Tat ca', ...uniqueLocations];
+    return ['Tất cả', ...uniqueLocations];
   }, []);
 
   const filteredPosts = useMemo(() => {
@@ -16,7 +38,7 @@ function Danhsachtuyendung() {
 
     return recruitmentPosts.filter((post) => {
       const matchTitle = post.title.toLowerCase().includes(normalizedKeyword);
-      const matchLocation = location === 'Tat ca' || post.location === location;
+      const matchLocation = location === 'Tất cả' || post.location === location;
       return matchTitle && matchLocation;
     });
   }, [keyword, location]);
@@ -25,23 +47,23 @@ function Danhsachtuyendung() {
     <section className="recruitment-page">
       <div className="recruitment-shell">
         <header className="recruitment-header">
-          <p className="recruitment-kicker">He thong tuyen dung</p>
-          <h1 className="recruitment-title">Danh sach thong tin tuyen dung</h1>
+          <p className="recruitment-kicker">Hệ thống tuyển dụng</p>
+          <h1 className="recruitment-title">Danh sách thông tin tuyển dụng</h1>
 
           <div className="recruitment-toolbar">
             <div className="recruitment-search-wrap">
-              <span className="recruitment-icon">search</span>
+              <SearchIcon />
               <input
                 className="recruitment-search"
                 type="text"
-                placeholder="Tim kiem cong viec"
+                placeholder="Tìm kiếm công việc"
                 value={keyword}
                 onChange={(event) => setKeyword(event.target.value)}
               />
             </div>
 
             <div className="recruitment-select-wrap">
-              <span className="recruitment-icon">location_on</span>
+              <LocationIcon />
               <select
                 className="recruitment-location-filter"
                 value={location}
@@ -59,15 +81,15 @@ function Danhsachtuyendung() {
 
         <div className="recruitment-table-head">
           <span>#</span>
-          <span>Ten cong viec</span>
-          <span>So vi tri</span>
-          <span>Dia diem</span>
-          <span>Thao tac</span>
+          <span>Tên công việc</span>
+          <span>Số vị trí</span>
+          <span>Địa điểm</span>
+          <span>Thao tác</span>
         </div>
 
         <div className="recruitment-list">
           {filteredPosts.length === 0 ? (
-            <p className="recruitment-empty-state">Khong co tin tuyen dung phu hop.</p>
+            <p className="recruitment-empty-state">Không có tin tuyển dụng phù hợp.</p>
           ) : (
             filteredPosts.map((post, index) => (
               <article
@@ -84,7 +106,7 @@ function Danhsachtuyendung() {
                   <span>{post.location}</span>
                 </div>
                 <button className="recruitment-apply-btn" type="button">
-                  Ung tuyen
+                  Ứng tuyển
                 </button>
               </article>
             ))

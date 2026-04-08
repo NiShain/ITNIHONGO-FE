@@ -45,6 +45,10 @@
 }
 
 .recruitment-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: block;
   color: #5b6368;
 }
 
